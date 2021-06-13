@@ -99,6 +99,7 @@ public class HomePageSteps extends CommonSteps {
 	public void get_url_dummy_for_test() {
 		
 		logsteps.execution_log("get url");
+		
 	}
 	@When("Test enter detials")
 	public void condition_dummy_for_test() {
