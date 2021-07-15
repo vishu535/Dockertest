@@ -20,13 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -37,10 +31,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ca.poc.djj.utils.BaseSteps;
 import ca.poc.djj.utils.LogSteps;
 import ca.poc.djj.utils.WaitUtil;
 import net.serenitybdd.core.pages.PageObject;
@@ -308,89 +298,7 @@ public class CommonSteps {
 			// even when there is one.
 		}
 	}
-	public static int getRowNumber(String value) throws IOException {
-		int num = 0;
-		try {
-			String table_path = BaseSteps.getTablePath();
-			FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir")+"\\"+table_path + "TestDataScrapconnect.xlsx"));
-			Workbook workbook = new XSSFWorkbook(inputStream);
-			Sheet firstSheet = workbook.getSheetAt(0);
-			Iterator<Row> rowIterator = firstSheet.iterator();
-			while (rowIterator.hasNext())
-			{
-				Row row = rowIterator.next();
-				Cell cell = row.getCell(0);
-				if(cell.getStringCellValue().equalsIgnoreCase(value)) {
-					num = row.getRowNum();
-				}
-			}
-		}catch(NullPointerException npe) {
-		}	return num;
-	}
-
-	public static Map<String, String> readexceldata(String value) throws IOException {
-		String table_path = BaseSteps.getTablePath();
-		FileInputStream inputStream = new FileInputStream(new File(System.getProperty("user.dir")+"\\"+table_path + "TestDataScrapconnect.xlsx"));
-		Workbook workbook = new XSSFWorkbook(inputStream);
-		Sheet firstSheet = workbook.getSheetAt(0);
-		Row row = firstSheet.getRow(0);
-		List<String> li_k = new ArrayList<String>();
-		for(Cell cell : row) {
-			cell.setCellType(Cell.CELL_TYPE_STRING);
-			li_k.add(cell.getStringCellValue());
-		}
-		System.err.println(getRowNumber(value));
-		Row row_v = firstSheet.getRow(getRowNumber(value));
-		List<String> li_v = new ArrayList<String>();
-		for(Cell cell : row_v) {
-			cell.setCellType(Cell.CELL_TYPE_STRING);
-			li_v.add(cell.getStringCellValue());
-		}
-		System.err.println(li_k.size());
-		System.err.println(li_v.size());
-		Map<String, String> map = new HashMap<String, String>();
-		for(int i=0;i<li_k.size();i++) {
-			map.put(li_k.get(i), li_v.get(i));
-		}
-		System.out.println(map);
-		workbook.close();
-		inputStream.close();
-		
-		return map;	
-	}
 	
-	public static void jsonconvert(String testrow) throws IOException {
-		Map<String, String> map = new HashMap<String, String>();
-		map = readexceldata(testrow);
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-            String json = objectMapper.writeValueAsString(map);
-            System.out.println(json);
-            objectMapper.writeValue(new File("details.json"), map);
-            
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-	}
-	
-	public String readjson(String key) throws FileNotFoundException, IOException, org.json.simple.parser.ParseException {
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(new FileReader("details.json"));
-		JSONObject jsonObject = (JSONObject)obj;
-		return (String)jsonObject.get(key);
-	}
-	
-	public void writejson() throws FileNotFoundException, IOException, org.json.simple.parser.ParseException {
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(new FileReader("details.json"));
-		JSONObject jsonObject =  (JSONObject)obj;
-	//	jsonObject.put(key, value);		
-		try (FileWriter file = new FileWriter("details.json")) 
-        {
-            file.write(jsonObject.toString());
-            System.out.println("Successfully updated json object to file...!!");
-        }
-	}
 	
 	
 		public String getDate() {

@@ -7,12 +7,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -243,94 +238,4 @@ public class HomePageSteps extends CommonSteps {
 	}
 	
 	
-	
-	public static int getRowNumber(String value) throws IOException {
-		int num = 0;
-		try {
-			FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\vishu\\Documents\\djj-2021\\D365FO.Implementation.IntegrationTests\\src\\test\\resources\\data\\dev\\TestDataScrapconnect.xlsx"));
-			Workbook workbook = new XSSFWorkbook(inputStream);
-			Sheet firstSheet = workbook.getSheetAt(0);
-			Iterator<Row> rowIterator = firstSheet.iterator();
-			while (rowIterator.hasNext())
-			{
-				Row row = rowIterator.next();
-				Cell cell = row.getCell(0);
-				if(cell.getStringCellValue().equalsIgnoreCase(value)) {
-					num = row.getRowNum();
-				}
-			}
-		}catch(NullPointerException npe) {
-		}	return num;
-	}
-	
-	@When("get values from excel and create json")
-	public void excel_ro_to_json() throws IOException {
-		String str = "Scenario2";
-		FileInputStream fis = new FileInputStream("C:\\Users\\vishu\\Documents\\djj-2021\\D365FO.Implementation.IntegrationTests\\src\\test\\resources\\data\\dev\\TestDataScrapconnect.xlsx");
-        XSSFWorkbook workbook = new XSSFWorkbook(fis);
-        XSSFSheet sheet = workbook.getSheet("TestCase");
-        Row row1 = sheet.getRow(getRowNumber(str));
-		
-	}
-	@Then("write values to data $ScenarioName")
-	 public void writeToExcel(String no) throws IOException {
-		contractID = Serenity.sessionVariableCalled("Contract ID").toString();
-		shipmentID = Serenity.sessionVariableCalled("ShipmentNumber").toString();
-		paymentID = Serenity.sessionVariableCalled("PaymentNumber").toString();
-	//	contractID = "1211";
-	//	shipmentID = "RTYUI7";
-		System.out.println("contract--------"+contractID);
-		System.out.println("shipping--------"+shipmentID);
-			FileInputStream fis = new FileInputStream("C:\\Users\\vishu\\Documents\\djj-2021\\D365FO.Implementation.IntegrationTests\\src\\test\\resources\\data\\dev\\TestDataScrapconnect.xlsx");
-	        FileOutputStream fos = null;
-	        XSSFWorkbook workbook = new XSSFWorkbook(fis);
-	        XSSFSheet sheet = workbook.getSheet("TestCase");
-	        Row row1 = sheet.getRow(getRowNumber(no));       
-	        int colNum = -1;
-	        int colNum2 = -1;
-	        int colNum3 = -1;
-	        int sno = Integer.parseInt(no);
-	   //     Row row = sheet.getRow(no);
-	        for (int i = 0 ;i<=row1.getLastCellNum();i++){
-	            Cell cell1 = row1.getCell(i);
-	            String cellValue1 = cell1.getStringCellValue();
-	            if ("contract".equals(cellValue1)){
-	                 colNum = i ;
-	                 Cell cel = row1.createCell(colNum);
-	                 cel = row1.getCell(colNum);
-	                 cel.setCellValue(contractID);
-	                 System.out.println("huuurahhhhh "+colNum);
-	                 break;
-	            }
-	        }
-	        for (int k = 0 ;k<=row1.getLastCellNum();k++){
-	            Cell cell2 = row1.getCell(k);
-	            String cellValue1 = cell2.getStringCellValue();
-	            if ("shipping".equals(cellValue1)){
-	                 colNum2 = k;
-	                 Cell cel2 = row1.createCell(colNum2);
-	                 cel2 = row1.getCell(colNum2);
-	                 cel2.setCellValue(shipmentID);
-	                 System.out.println("huuurahhhhh "+colNum2);
-	                 break;
-	            }
-	        }
-	        
-	        for (int p = 0 ;p<=row1.getLastCellNum();p++){
-	            Cell cell3 = row1.getCell(p);
-	            String cellValue1 = cell3.getStringCellValue();
-	            if ("payment".equals(cellValue1)){
-	                 colNum3 = p;
-	                 Cell cel3 = row1.createCell(colNum2);
-	                 cel3 = row1.getCell(colNum3);
-	                 cel3.setCellValue(paymentID);
-	                 System.out.println("huuurahhhhh "+colNum3);
-	                 break;
-	            }
-	        }
-	             
-	        fos = new FileOutputStream("C:\\Users\\vishu\\Documents\\djj-2021\\D365FO.Implementation.IntegrationTests\\src\\test\\resources\\data\\dev\\TestDataScrapconnect.xlsx");
-	        workbook.write(fos);
-	        fos.close();
-	    }
 }
