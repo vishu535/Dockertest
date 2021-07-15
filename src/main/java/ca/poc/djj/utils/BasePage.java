@@ -1,7 +1,5 @@
 package ca.poc.djj.utils;
 
-import static ca.poc.djj.utils.StreamUtil.getCurrentDateIndexFromList;
-
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +39,7 @@ public class BasePage extends PageObject {
 	@FindBy(xpath = "//div[contains(@class,'datePickerDay') and contains(@class,'datePickerDayIsToday')]")
 	public WebElementFacade currentDayFromDatePicker;
 
-	public WebElementFacade previousDayFromDatePicker() {
-		List<WebElementFacade> enabledDaysFromPickerDate = findAll(
-				"//div[contains(@class,'datePickerDay') and not(contains(@class,'datePickerDayIsDisabled'))]");
-		int todayIndex = getCurrentDateIndexFromList(enabledDaysFromPickerDate);
-		return enabledDaysFromPickerDate.get(todayIndex - 1);
-	}
-
+	
 	@FindBy(xpath = "//*[contains(@class, 'spinningWheel')]")
 	private WebElementFacade spinningWheel;
 
@@ -144,34 +136,6 @@ public class BasePage extends PageObject {
 
 	public WebElement getActiveElement() {
 		return getDriver().switchTo().activeElement();
-	}
-
-	public int getQuantityOfErrors() {
-		int count = 0;
-		List<WebElementFacade> errorList = new ArrayList<>();
-		if (findAll("//div[@class='dateBoxPopup']").size() != 0) {
-			errorList = findAll(
-					"//div[@class='dateBoxPopup']//img[(@class='wave4tip' or @class='wave5icon') and contains(@alt,'ERROR') and "
-							+ "not" + "(contains(@alt,'CONTRAST'))]");
-		}
-		if (findAll("//div[@id='actionMenuPopup']").size() != 0) {
-			errorList.addAll(findAll(
-					"//div[@id='actionMenuPopup']//img[(@class='wave4tip' or @class='wave5icon') and contains(@alt,'ERROR') and "
-							+ "not" + "(contains(@alt,'CONTRAST'))]"));
-		}
-		if (findAll("//div[@class='formDialog']").size() != 0) {
-			errorList.addAll(findAll(
-					"//div[@class='formDialog']//img[(@class='wave4tip' or @class='wave5icon') and contains(@alt,'ERROR') and not"
-							+ "(contains(@alt,'CONTRAST'))]"));
-		}
-		errorList.addAll(findAll(
-				"//img[(@class='wave4tip' or @class='wave5icon') and contains(@alt,'ERROR') and not(contains(@alt,'CONTRAST'))]"));
-		for (WebElementFacade error : errorList) {
-			if (error.isVisible()) {
-				count++;
-			}
-		}
-		return count;
 	}
 
 	public int getQuantityOfErrors(String path) {
