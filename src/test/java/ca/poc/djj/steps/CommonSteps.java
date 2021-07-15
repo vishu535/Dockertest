@@ -122,13 +122,6 @@ public class CommonSteps {
 		}
 	}
 
-	public boolean verifyControlisReady(PageObject po) {
-		JavascriptExecutor jsExec = (JavascriptExecutor) po.getDriver();
-		boolean jqueryReady = (boolean) jsExec.executeScript("return jQuery.active==0");
-		return jqueryReady;
-
-	}
-
 	public void clickSafelyByWait(WebElement we) {
 		WaitUtil.waitMSeconds(180000);
 		try {
@@ -139,21 +132,6 @@ public class CommonSteps {
 		}
 	}
 
-	public static boolean untilPageLoadComplete(WebElementFacade we, PageObject po, long timeoutInSeconds) {
-		{
-			JavascriptExecutor jsExec = (JavascriptExecutor) po.getDriver();
-			// Boolean isPageLoaded = (Boolean) ((JavascriptExecutor)
-			// we).executeScript(script, args)
-			boolean isPageLoaded = (boolean) jsExec.executeScript("return jQuery.active==0");
-			// boolean isPageLoaded = (boolean) jsExec.executeScript("arguments[0].value='"
-			// + we + "';", po);
-			if (!isPageLoaded)
-				System.out.println("Document is loading");
-			return isPageLoaded;
-
-		}
-
-	}
 
 	public void waitClick(WebElement we) {
 		WaitUtil.waitMSeconds(20000);
