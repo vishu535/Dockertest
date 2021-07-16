@@ -38,6 +38,7 @@ public class FreightNewLaneSteps extends CommonSteps {
 	public void add_second_stop() throws InterruptedException {
 		rf_page.add_stop_second.click();
 		logsteps.execution_log("second stop button clicked");
+		Thread.sleep(2000);
 		jsClick(rf_page.new_stop_yard);
 		logsteps.execution_log("selected yard");
 		rf_page.yard_select.selectByVisibleText("MRS-Monroe");
