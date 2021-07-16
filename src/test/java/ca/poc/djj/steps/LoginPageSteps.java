@@ -53,14 +53,14 @@ public class LoginPageSteps extends CommonSteps {
 		login_page.getDriver().get(baseUrl);
 //		login_page.open();
 		login_page.getDriver().manage().window().maximize();
-		login_page.username.type("sai.kollu@djj.com");
+		login_page.username.type(readjson("username"));
 		if(login_page.username.isPresent()) {
-			login_page.username.type("sai.kollu@djj.com");
+			login_page.username.type(readjson("username"));
 			logsteps.execution_log("User enters username");
 			login_page.next_button.click();
 			logsteps.execution_log("Click on next button successful");
 			login_page.password.waitUntilPresent();
-			login_page.password.sendKeys("35BromineBi");
+			login_page.password.sendKeys(readjson("password"));
 			logsteps.execution_log("User enters password");
 			login_page.signin_button.click();
 			login_page.yes_button.click();
