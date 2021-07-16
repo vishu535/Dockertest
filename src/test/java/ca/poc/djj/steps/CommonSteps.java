@@ -1,11 +1,11 @@
 package ca.poc.djj.steps;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,23 +16,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import ca.poc.djj.pages.HomePage;
 import ca.poc.djj.utils.LogSteps;
 import ca.poc.djj.utils.WaitUtil;
+import io.appium.java_client.windows.WindowsDriver;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
@@ -41,6 +45,7 @@ import net.thucydides.core.annotations.Steps;
 public class CommonSteps {
 	@Steps
 	LogSteps logsteps;
+	HomePage ccp;
 	public static String writFileNumber = null;
 	public static String refile_WritFileNumber = null;
 	public static String alertText = null;
@@ -122,6 +127,13 @@ public class CommonSteps {
 		}
 	}
 
+	public boolean verifyControlisReady(PageObject po) {
+		JavascriptExecutor jsExec = (JavascriptExecutor) po.getDriver();
+		boolean jqueryReady = (boolean) jsExec.executeScript("return jQuery.active==0");
+		return jqueryReady;
+
+	}
+
 	public void clickSafelyByWait(WebElement we) {
 		WaitUtil.waitMSeconds(180000);
 		try {
@@ -132,6 +144,21 @@ public class CommonSteps {
 		}
 	}
 
+	public static boolean untilPageLoadComplete(WebElementFacade we, PageObject po, long timeoutInSeconds) {
+		{
+			JavascriptExecutor jsExec = (JavascriptExecutor) po.getDriver();
+			// Boolean isPageLoaded = (Boolean) ((JavascriptExecutor)
+			// we).executeScript(script, args)
+			boolean isPageLoaded = (boolean) jsExec.executeScript("return jQuery.active==0");
+			// boolean isPageLoaded = (boolean) jsExec.executeScript("arguments[0].value='"
+			// + we + "';", po);
+			if (!isPageLoaded)
+				System.out.println("Document is loading");
+			return isPageLoaded;
+
+		}
+
+	}
 
 	public void waitClick(WebElement we) {
 		WaitUtil.waitMSeconds(20000);
@@ -142,6 +169,11 @@ public class CommonSteps {
 			System.out.println("clickSafelyByWait exception is: " + e.toString());
 		}
 	}
+	
+	public void hoverToElement(WebElementFacade webElement) {
+		String mouseOverScript = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('mouseover', true, false); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('onmouseover');}";
+	    ((JavascriptExecutor) ccp.getDriver()).executeScript(mouseOverScript, webElement);
+	}
 
 	public void elementToBeClickable(WebElement we, PageObject po, long timeout) {
 		WebDriverWait wait = new WebDriverWait(po.getDriver(), timeout);
@@ -151,6 +183,12 @@ public class CommonSteps {
 	public void elementToBeVisible(WebElement we, PageObject po, long timeout) {
 		WebDriverWait wait = new WebDriverWait(po.getDriver(), timeout);
 		wait.until(ExpectedConditions.visibilityOf(we));
+	}
+	
+	public void elementToBeVisibleAndClick(WebElementFacade we, PageObject po, long timeout) {
+		WebDriverWait wait = new WebDriverWait(po.getDriver(), timeout);
+		wait.until(ExpectedConditions.visibilityOf(we));
+		jsClick(we);
 	}
 
 	public static String validateHoliday() throws ParseException {
@@ -264,6 +302,51 @@ public class CommonSteps {
 		 */
 	}
 	
+	public void enterTextAndClick_CD(String Field, PageObject po, String text) throws InterruptedException {
+	//	elementToBeClickable(po.getDriver().findElement(By.xpath("//div[contains(@class,'dialog-popup-content')] //label[text()='" + Field + "']/following-sibling::input")), ccp, 600);
+		jsClick(po.getDriver().findElement(By.xpath("//div[contains(@class,'dialog-popup-content')] //label[text()='" + Field + "']/following-sibling::input")));
+		po.getDriver().findElement(By.xpath("//div[contains(@class,'dialog-popup-content')] //label[text()='" + Field + "']/following-sibling::input")).clear();
+		char[] ch = text.toCharArray();
+		for (int i = 0; i < ch.length; i++) {
+			Thread.sleep(100);
+			po.getDriver().findElement(By.xpath("//div[contains(@class,'dialog-popup-content')] //label[text()='" + Field + "']/following-sibling::input")).sendKeys("" + ch[i]);
+		}
+
+		Thread.sleep(500);
+		po.withAction().sendKeys(Keys.chord(Keys.ARROW_RIGHT)).build().perform();
+		Thread.sleep(1500);
+		po.withAction().sendKeys(Keys.chord(Keys.ENTER)).build().perform();
+		Thread.sleep(2000);
+		po.withAction().sendKeys(Keys.chord(Keys.TAB)).build().perform();
+		/*
+		 * try { WebDriverWait wait = new WebDriverWait(po.getDriver(), 60000);
+		 * wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+		 * "//form[contains(@class,'popupShadow')]")));
+		 * jsClick(po.getDriver().findElement(By.
+		 * xpath("//form[contains(@class,'popupShadow')]//div[@class='rowTemplate listItem']/div[3] //input[@title='"
+		 * +text+"']"))); }catch(ElementNotInteractableException ene) {
+		 * Thread.sleep(3000);
+		 * po.withAction().sendKeys(Keys.chord(Keys.ARROW_RIGHT)).build().perform();
+		 * po.withAction().sendKeys(Keys.chord(Keys.TAB)).build().perform();
+		 * po.withAction().sendKeys(Keys.chord(Keys.ENTER)).build().perform(); }
+		 */
+	}
+
+	public void jsClick(WebElement webElement) {
+		JavascriptExecutor executor = (JavascriptExecutor) ccp.getDriver();
+		executor.executeScript("arguments[0].click();", webElement);
+	}
+	
+	public void actionsClick(WebElement webElement) {
+		Actions action = new Actions(ccp.getDriver());
+		action.click(webElement).build().perform();
+	}
+
+	public void jsClick(WebElementFacade webElement) {
+		
+		JavascriptExecutor executor = (JavascriptExecutor) ccp.getDriver();
+		executor.executeScript("arguments[0].click();", webElement);
+	}
 	
 	
 	public void waitForInVisibilityOfElement(WebElement we, PageObject po, long timeout) {
@@ -276,10 +359,54 @@ public class CommonSteps {
 			// even when there is one.
 		}
 	}
+
+	public String readjson(String key) throws FileNotFoundException, IOException, org.json.simple.parser.ParseException {
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(new FileReader("details.json"));
+		JSONObject jsonObject = (JSONObject)obj;
+		return (String)jsonObject.get(key);
+	}
 	
+	public void writejson(String key, String value) throws FileNotFoundException, IOException, org.json.simple.parser.ParseException {
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(new FileReader("details.json"));
+		JSONObject jsonObject =  (JSONObject)obj;
+		jsonObject.put(key, value);		
+		try (FileWriter file = new FileWriter("details.json")) 
+        {
+            file.write(jsonObject.toString());
+            System.out.println("Successfully updated json object to file...!!");
+        }
+	}
 	
+	public void waitWhileForProcessing() {
+		while (!(ccp.getDriver()
+				.findElements(By.xpath("//*[@id='ShellProcessingDiv'][not(contains(@style, 'display: none'))]"))
+				.size() == 0)) {
+			try {
+				System.out.println("Entered While");
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
-		public String getDate() {
+	public void clickuntilclick(WebElement we) {
+		Actions action = new Actions(ccp.getDriver());
+		while (!(ccp.getDriver()
+				.findElements(By.xpath("//*[@id='ShellProcessingDiv'][not(contains(@style, 'display: none'))]"))
+				.size() == 1)) {
+			try {
+				Thread.sleep(2000);
+			action.moveToElement(we, -40, 0).click().build().perform();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public String getDate() {
 		SimpleDateFormat ft = new SimpleDateFormat("M/dd/YYYY");
 
 		Calendar calendar = Calendar.getInstance();
@@ -301,7 +428,26 @@ public class CommonSteps {
 
 	}
 
+	public void ScrollTOElement(WebElement element) {//
+		((JavascriptExecutor) ccp.getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void jsType(WebElementFacade WebElement, String text) {
+		JavascriptExecutor executor = (JavascriptExecutor) ccp.getDriver();
+		executor.executeScript("arguments[0].value=" + text + ";", WebElement);
+	}
 	
+	public void jsType(WebElement webElement, String text) {
+		JavascriptExecutor executor = (JavascriptExecutor) ccp.getDriver();
+		executor.executeScript("arguments[0].value=" + text + ";", webElement);
+	}
+
 	private static final String NUMERIC_STRING = "0123456789";
 	private static final String ALPHABET_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -371,7 +517,18 @@ public class CommonSteps {
 	}
 
 	
-		/*
+	
+	
+	public void jsfocus(WebElementFacade WebElement) {
+		JavascriptExecutor executor = (JavascriptExecutor) ccp.getDriver();
+		executor.executeScript("arguments[0].focus();", WebElement);
+	}
+
+	public void jsexecuteclick(WebElementFacade WebElement) {
+		JavascriptExecutor executor = (JavascriptExecutor) ccp.getDriver();
+		executor.executeScript("arguments[0].click();", WebElement);
+	}
+	/*
 	 * String source = "C:/--/source"; File srcDir = new File(source);
 	 * 
 	 * String destination = "C:/--/destination"; File destDir = new
@@ -380,7 +537,35 @@ public class CommonSteps {
 	 * try { FileUtils.copyDirectory(srcDir, destDir); } catch (IOException e) {
 	 * e.printStackTrace(); }
 	 */
-	
-	
+	public static WindowsDriver driverwin = null;
+	public WindowsDriver setupScrapdragon() throws InterruptedException  {	
+		try {
+			String[] ser = {"cmd.exe", "/C", "Start", "C:\\Users\\vishu\\Desktop\\winserver.bat"};
+			Runtime.getRuntime().exec(ser);  
+		} catch (IOException ex) {
+		}
+		try {
+            String[] command = {"cmd.exe", "/C", "Start", "D:\\Dragon\\scrapdragon.bat"};
+            Process p =  Runtime.getRuntime().exec(command);   
+            Thread.sleep(6000);
+        } catch (IOException ex) {
+        }
+		DesiredCapabilities cap = new DesiredCapabilities();
+	//	cap.setCapability("app", "C:\\Users\\vishu\\Desktop\\scrapdragon.bat");
+	//	Thread.sleep(5000);
+		 cap.setCapability("app", "D:\\Dragon\\Scrap Dragon Software\\ScrapDragon\\ScrapDragon.Client.BackOffice.Wpf.exe");
+		cap.setCapability("platformName", "Windows");
+		cap.setCapability("deviceName", "WindowsPC");
+		cap.setCapability("ms:waitForAppLaunch", "10");
+		try {
+			driverwin = new WindowsDriver(new URL("http://127.0.0.1:4723"), cap);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		driverwin.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+		
+		return driverwin;
+	}
 
 }
