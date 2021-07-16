@@ -1,241 +1,116 @@
 package ca.poc.djj.steps;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 
+import java.util.List;
 
-import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 
 import ca.poc.djj.pages.HomePage;
 import ca.poc.djj.utils.LogSteps;
-import ca.poc.djj.utils.WaitUtil;
 import net.serenitybdd.core.Serenity;
-import net.serenitybdd.core.SerenitySystemProperties;
-import net.thucydides.core.ThucydidesSystemProperty;
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Steps;
-
-import net.thucydides.core.util.EnvironmentVariables;
-import net.thucydides.core.util.SystemEnvironmentVariables;
 
 public class HomePageSteps extends CommonSteps {
 	@Steps
 	LogSteps logsteps;
 	HomePage h_page;
 	
-	
-	public String contractID = "";
-	public String paymentID = "";
-	public String VendorLocation = "";
-	public String origincity = "";
-	public String destinationcity = "";
-	public String shipmentID = "";
-	public String genShippingNum = "";
-	
-	@Given("user login to application with valid credentials")
-	public void user_login_to() throws Exception {
-		EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
-		String baseUrl = variables.getProperty(ThucydidesSystemProperty.WEBDRIVER_BASE_URL);
-		String un = variables.getProperty(ThucydidesSystemProperty.SERENITY_PROXY_USER);
-		String pwd = variables.getProperty(ThucydidesSystemProperty.SERENITY_PROXY_PASSWORD);
-		System.out.println("------------"+un+pwd);
-		h_page.getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-		h_page.getDriver().get(baseUrl);
-		h_page.open();
-	}
-	@Given("user login to application with valid credentials as: $Username and $Password")
-	public void user_login_to_Dynamics(String un, String pw) throws Exception {
-	//	try {
-		EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
-		un = variables.getProperty(ThucydidesSystemProperty.SERENITY_PROXY_USER);
-		String pwd = variables.getProperty(ThucydidesSystemProperty.SERENITY_PROXY_PASSWORD);
-			System.out.println("Login method started =====> " + (java.time.LocalDateTime.now()));
-			logsteps.execution_log(
-					"Creating object for SystemEnvironmentVariables =====>" + (java.time.LocalDateTime.now()));
-			String baseUrl = variables.getProperty(ThucydidesSystemProperty.WEBDRIVER_BASE_URL);
-		//	System.out.println("------"+SerenitySystemProperties.getProperties().getValue(null, "USER_NAME"));
-			logsteps.execution_log(
-					"Reading baseUrl from Serenity.Properites file =====>" + (java.time.LocalDateTime.now()));
-			h_page.getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-			h_page.getDriver().manage().deleteAllCookies();
-			logsteps.execution_log("Time before invoking browser =====> " + (java.time.LocalDateTime.now()));
-			h_page.getDriver().get(baseUrl);
-			h_page.open();
-			logsteps.execution_log("Time after opening browser =====> " + (java.time.LocalDateTime.now()));
-			h_page.getDriver().manage().window().maximize();
-			if(h_page.TXT_Username.isPresent()) {
-				h_page.TXT_Username.type(un);
-				logsteps.execution_log("User enters username");
-				h_page.Button_Next.click();
-				logsteps.execution_log("Click on next button successful");
-				h_page.TXT_Password.waitUntilPresent();
-				h_page.TXT_Password.sendKeys(pwd);
-				logsteps.execution_log("User enters password");
-				h_page.btn_signIn.click();
-				h_page.btn_Yes.click();
-				logsteps.execution_log("Time before login click " + (java.time.LocalDateTime.now()));
-			}
-			/*
-			 * } catch (Exception e) { // logsteps.debug_log("Login Failed");
-			 * Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer.exe");
-			 * Runtime.getRuntime().exec("taskkill /F /IM iexplore.exe"); throw new
-			 * Exception("Exception occured due to Login failure");
-			 
-		}*/
-
+	@When("user navigates to scale pricing")
+	public void navigates_to_scale_pricing() {
+		h_page.scale_pricing_head.click();
+		logsteps.execution_log("navigated to scale pricing");
 	}
 	
-	@Given("Test login get url")
-	public void get_url_dummy_for_test() {
+	@Then("user navigates to price list")
+	public void navigates_to_price_list() {
+		jsClick(h_page.price_list_head);
+		logsteps.execution_log("navigated to price list");
+	}
+	
+	@When("User navigates to recycling CRM section")
+	public  void navigates_to_recycling_crm_section() throws InterruptedException {
+	//	h_page.crm_iframe.waitUntilVisible();
 		
-		logsteps.execution_log("get url");
+		Thread.sleep(5000);
+		h_page.getDriver().navigate().refresh();
+		Thread.sleep(10000);
+		System.out.println("refresh!!!!!");
+	//	h_page.getDriver().navigate().refresh();
+	//	Thread.sleep(40000);
+		System.out.println("refresh!!!!!2");
+		Thread.sleep(60000);
+		h_page.crm_iframe.waitUntilVisible();
+		h_page.getDriver().switchTo().frame(h_page.crm_iframe);
+		logsteps.execution_log("Handled frame ");
+		h_page.recycling_crm_section.click();
+		h_page.getDriver().switchTo().defaultContent();
+		logsteps.execution_log("navigated to CRM section ");
+	}
+	
+	@When("User directly navigates to accounts")
+	public void navigates_account() {
+		h_page.getDriver().get("https://djjvikingqa.crm.dynamics.com/main.aspx?appid=dd9233be-5e39-eb11-a813-000d3a5a17e3&pagetype=entityrecord&etn=account");
+		logsteps.execution_log("account opened");
+	}
+	
+	@When("User selects accounts view activity")
+	public void select_accounts_view_activity() {
+		h_page.all_accounts_view_activity.click();
+		logsteps.execution_log("selected All accounts oview activity");
+	}
+	
+	@When("user selects all accounts from view section")
+	public void all_accounts_view_section() throws InterruptedException {
+		h_page.dropdown_arrow.waitUntilVisible();
+		h_page.dropdown_arrow.waitUntilClickable();
+		Thread.sleep(1500);
+		h_page.dropdown_arrow.click();
+		Thread.sleep(1500);
+		h_page.all_accounts.click();
+		Thread.sleep(1500);
+		logsteps.execution_log("selected All accounts option from view section");
+	}
+	
+	@Then("user select company branch and search prices from price list")
+	public void select_price_pricelist() throws InterruptedException {
+		h_page.select_company.selectByVisibleText("MRS");
+		logsteps.execution_log("selected company");
+		Thread.sleep(3000);
+		h_page.select_branch.selectByVisibleText("MRS-Gastonia");
+		logsteps.execution_log("selected branch");
+		h_page.search_button.click();
+		logsteps.execution_log("search price list");
+		Thread.sleep(3000);
+	}
+	
+	@When("Create new Supplier account from supplier home page")
+	public void new_supplier_button() throws InterruptedException {
+		Thread.sleep(5000);
+		h_page.new_supplier_button.waitUntilClickable();
+		jsClick(h_page.new_supplier_button);
+		logsteps.execution_log("user started creating new supplier");
+		Thread.sleep(3000);
+		h_page.text_account_supplier_value.waitUntilVisible();
+		Thread.sleep(3000);
+		System.err.println(h_page.text_account_supplier_value.getText());
+		if(h_page.text_account_supplier_value.getText().contains("SAIOne - Supplier Info")) {
+			h_page.text_account_supplier_value.click();
+			h_page.supplier_home_drop.click();
+			Thread.sleep(5000);
+		}
+	}
+	
+	@Then("validate material description in pricing")
+	public void validate_material() {
 		
-	}
-	@When("Test enter detials")
-	public void condition_dummy_for_test() {
+		List<WebElementFacade> li = h_page.table_list();
+	for(WebElementFacade we : li) {	
 		
-		
-		logsteps.execution_log("test log in condition");
+		if(Serenity.sessionVariableCalled("Material").toString().equals(we.getText())){
+			logsteps.execution_log("material present in price table");
+		}
 	}
-	@Then("Test result validation")
-	public void result_for_test() {
-		logsteps.execution_log("test log in result");
 	}
-	@Then("user verifies login is successful")
-	public void user_verify_login() throws Exception {
-//		untilPageLoadComplete(h_page.btn_pane, h_page, 40000);
-		h_page.btn_pane.waitUntilVisible();
-		h_page.btn_pane.isDisplayed();
-	}
-	
-	@When("user navigates to contract entry in module menu")
-	public void user_navigate_contact_entry() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("DJJ Brokerage");
-		logsteps.execution_log("Navigated to DJJ Brokerage");
-		h_page.navigate_to_workspace("Purchase contract entry");
-		logsteps.execution_log("Navigated to workspace - Purchase contract entry");
-		
-	}
-
-	
-	@When("user navigates to General journals in module menu")
-	public void user_navigate_general_journals() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("General ledger");
-		logsteps.execution_log("General ledger");
-		h_page.navigate_to_workspace("General journals");
-		logsteps.execution_log("Navigated to workspace - General journals");
-	
-	}
-	
-	@When("user navigates to invoice shipments")
-	public void user_navigates_InvoiceShipments() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("DJJ Brokerage");
-		logsteps.execution_log("Navigated to DJJ Brokerage");
-		h_page.navigate_to_workspace("Invoice shipments");
-		logsteps.execution_log("Navigated to workspace - Invoice shipments");
-
-	}
-	   
-	@Then("user search batch jobs with: $Username")
-	public void user_search_batchJobs(String un) throws InterruptedException {
-		EnvironmentVariables variables = SystemEnvironmentVariables.createEnvironmentVariables();
-		un = variables.getProperty(ThucydidesSystemProperty.SERENITY_PROXY_USER);
-		h_page.search_batch_job();
-		h_page.batch_jobs_filter_by_username(un);
-		Thread.sleep(2000);
-	}
-	
-	@When("user navigates to All purchase orders from Accounts payable")
-	public void user_navigates_AccountPayable() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("Accounts payable");
-		logsteps.execution_log("Navigated to Accounts payable");
-		h_page.navigate_to_workspace("All purchase orders");
-		logsteps.execution_log("Navigated to workspace - All purchase orders");
-	
-	}
-	@When("user navigates to All sales orders from Accounts receivable")
-	public void user_navigates_AccountReceivable() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("Accounts receivable");
-		logsteps.execution_log("Navigated to Accounts receivable");
-		h_page.navigate_to_workspace("All sales orders");
-		logsteps.execution_log("Navigated to workspace - All sales orders");
-	
-	}
-	
-	@When("user navigates to Vendor payment journal from Accounts payable")
-	public void user_nagivates_VendorPaymentJournal() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("Accounts payable");
-		logsteps.execution_log("Navigated to Accounts payable");
-		h_page.navigate_to_workspace("Vendor payment journal");
-	
-	}
-	
-	@When("user navigates to Customer payment journal from Accounts receivable")
-	public void user_nagivates_CustomerPaymentJournal() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("Accounts receivable");
-		logsteps.execution_log("Navigated to Accounts receivable");
-		h_page.navigate_to_workspace("Customer payment journal");
-		logsteps.execution_log("Navigated to workspace - Customer payment journal");
-
-	}
-	
-	@When("user navigates to Freight bill workspace")
-	public void user_navigates_freightBill_workspace() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("DJJ Brokerage");
-		logsteps.execution_log("Navigated to DJJ Brokerage");
-		h_page.navigate_to_workspace("Freight bill workspace");
-		logsteps.execution_log("Navigated to - Freight bill workspace");
-	
-	}
-	
-	@When("user navigates to shipment workspace in module menu")
-	public void user_navigate_shipment_workspace() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("DJJ Brokerage");
-		logsteps.execution_log("Navigated to DJJ Brokerage");
-		h_page.navigate_to_workspace("Shipment workspace");
-		logsteps.execution_log("Navigated to workspace - shipment workspace");
-	
-	}
-	
-	@When("user navigates to Freight bill matching")
-	public void user_navigates_freightBill_matching() throws InterruptedException {
-		h_page.workspace_modules_icon();
-		h_page.navigate_to_modules("DJJ Brokerage");
-		logsteps.execution_log("Navigated to DJJ Brokerage");
-		h_page.navigate_to_workspace("Freight bill matching");
-		logsteps.execution_log("Navigated to workspace - Freight bill matching");
-		
-		h_page.run_in_the_background();
-		h_page.shipment_batch_processing_toggle();
-	//	csp.ok_button.waitUntilClickable();
-	}
-	
-	@When("test should pick only from desired row: $serialno")
-	public void test_row(String no) {
-		System.out.println("hello---------------------------"+no);
-	}
-	@When("test should pick only from desired row")
-	public void test_row() {
-		System.out.println("hello---------------------------");
-	}
-	@Then("user Logout")
-	public void user_logout() {
-		System.out.println("logout---------------------------");
-	}
-	
-	
 }

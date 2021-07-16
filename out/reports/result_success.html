@@ -141,7 +141,7 @@
         <div id="logo"><a href="index.html"><img src="images/serenity-logo.png" border="0"/></a></div>
         <div id="projectname-banner" style="float:right">
             <span class="projectname">
-                <span class="projecttitle">Djj Automation Test</span>
+                <span class="projecttitle">Djj Vikings Automation</span>
                 <span class="projectsubtitle"></span>
             </span>
         </div>
@@ -175,7 +175,7 @@
             <a href="requirement_type_story.html"><i class="fa fa-comments-o"></i> Stories</a>
         </li>
     </ul>
-    <span class="date-and-time"><a href="build-info.html"><i class="fa fa-info-circle"></i></a> Report generated 27-06-2021 23:35</span>
+    <span class="date-and-time"><a href="build-info.html"><i class="fa fa-info-circle"></i></a> Report generated 16-07-2021 12:11</span>
     <br style="clear:left"/>
 </div>
     <div class="clr"></div>
@@ -191,16 +191,16 @@
                             <div class="test-count-summary">
                                 <div>
 
-                                1 test
-                                    across 1 scenario
+                                2 tests
+                                    across 2 scenarios
 
                                      |
                                         <a href="result_success.csv" title="Download CSV"> <i class="fa fa-download"
                                                                                         title="Download CSV"></i></a>
 
                                     <p class="report-info"><i class="fas fa-info-circle"></i> Note that results include
-                                        data-driven scenarios containing test ,
-                                        which may also contain results other than test .</p>
+                                        data-driven scenarios containing tests ,
+                                        which may also contain results other than tests .</p>
 
 
 
@@ -234,7 +234,7 @@
                                                                 var labels = ['100%', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
                                                                 // Our series array that contains series objects or in this case series data arrays
 
-                                                                var series = [{meta: 'Passing tests (automated)', value: 1}, {meta: 'Passing tests (manual)', value: 0}, {meta: 'Pending tests (automated)', value: 0}, {meta: 'Pending tests (manual)', value: 0}, {meta: 'Ignored tests (automated)', value: 0}, {meta: 'Ignored tests (manual)', value: 0}, {meta: 'Skipped tests (automated)', value: 0}, {meta: 'Skipped tests (manual)', value: 0}, {meta: 'Failing tests (automated)', value: 0}, {meta: 'Failing tests (manual)', value: 0}, {meta: 'Broken tests (automated)', value: 0}, {meta: 'Broken tests (manual)', value: 0}, {meta: 'Compromised tests (automated)', value: 0}, {meta: 'Compromised tests (manual)', value: 0}];
+                                                                var series = [{meta: 'Passing tests (automated)', value: 2}, {meta: 'Passing tests (manual)', value: 0}, {meta: 'Pending tests (automated)', value: 0}, {meta: 'Pending tests (manual)', value: 0}, {meta: 'Ignored tests (automated)', value: 0}, {meta: 'Ignored tests (manual)', value: 0}, {meta: 'Skipped tests (automated)', value: 0}, {meta: 'Skipped tests (manual)', value: 0}, {meta: 'Failing tests (automated)', value: 0}, {meta: 'Failing tests (manual)', value: 0}, {meta: 'Broken tests (automated)', value: 0}, {meta: 'Broken tests (manual)', value: 0}, {meta: 'Compromised tests (automated)', value: 0}, {meta: 'Compromised tests (manual)', value: 0}];
 
                                                                 // As options we currently only set a static size of 300x200 px. We can also omit this and use aspect ratio containers
                                                                 // as you saw in the previous example
@@ -291,7 +291,7 @@
                                                                         <a href="result_success.html"><i
                                                                                 class='fa fa-check-circle-o success-icon'></i>&nbsp;Passing</a>
                                                                     </td>
-                                                                <td class="automated-stats">1</td>
+                                                                <td class="automated-stats">2</td>
                                                                 <td class="automated-stats">100%</td>
                                                             </tr>
                                                             <tr>
@@ -344,7 +344,7 @@
                                                             </tr>
                                                             <tr class="summary-stats">
                                                                 <td class="aggregate-result-count">Total</td>
-                                                                <td class="automated-stats">1</td>
+                                                                <td class="automated-stats">2</td>
                                                                 <td class="automated-stats"></td>
                                                             </tr>
                                                             </tbody>
@@ -364,7 +364,7 @@
                                                                     <a href="context_chrome.html">
                                                                         <span class="badge"
                                                                               style="background-color:#1D9918; margin:1em;padding:4px;"><i
-                                                                                class="fa fa-tag"></i> Chrome&nbsp;&nbsp;&nbsp;1</span>
+                                                                                class="fa fa-tag"></i> Chrome&nbsp;&nbsp;&nbsp;2</span>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -393,14 +393,27 @@
                                                 <tbody>
                                                 <tr class="scenario-result SUCCESS">
                                                     <td>
-                                                            <a href="story_test1.html">Test1</a>
+                                                            <a href="story_viking_freight.html">Viking_freight</a>
                                                     </td>
                                                     <td>
-                                                        <a href="stories_test1.story_test_report_chrome.html"><span class='context-icon'>CHROME</span>Test report</a>
+                                                        <a href="stories_viking_freight.story_login_to_vikings_freight_application_chrome.html"><span class='context-icon'><i class='fa fa-chrome' aria-hidden='true'></i></span>Login to vikings freight application</a>
                                                     </td>
-                                                    <td>3</td>
-                                                    <td>21:08:46</td>
-                                                    <td>461ms</td>
+                                                    <td>9</td>
+                                                    <td>12:08:21</td>
+                                                    <td>1m 25s</td>
+                                                    <td><a href='##beforetable'><i class='fa fa-check-circle-o success-icon ' title='SUCCESS'></i></a> <span
+                                                            style="display:none">SUCCESS</span></td>
+                                                </tr>
+                                                <tr class="scenario-result SUCCESS">
+                                                    <td>
+                                                            <a href="story_viking_pricing_addvarience.html">Viking_Pricing_AddVarience</a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="stories_viking_pricing_addvarience.story_login_to_vikings_chrome.html"><span class='context-icon'><i class='fa fa-chrome' aria-hidden='true'></i></span>Login to vikings</a>
+                                                    </td>
+                                                    <td>13</td>
+                                                    <td>12:09:47</td>
+                                                    <td>1m 20s</td>
                                                     <td><a href='##beforetable'><i class='fa fa-check-circle-o success-icon ' title='SUCCESS'></i></a> <span
                                                             style="display:none">SUCCESS</span></td>
                                                 </tr>
