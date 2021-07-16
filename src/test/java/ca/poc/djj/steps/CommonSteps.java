@@ -372,7 +372,9 @@ public class CommonSteps {
 		Object obj = parser.parse(new FileReader("details.json"));
 		JSONObject jsonObject =  (JSONObject)obj;
 		jsonObject.put(key, value);		
-		try (FileWriter file = new FileWriter("details.json")) 
+		FileWriter file = new FileWriter("details.json");
+		try 
+		
         {
             file.write(jsonObject.toString());
             System.out.println("Successfully updated json object to file...!!");
