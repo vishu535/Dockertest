@@ -1,6 +1,6 @@
 Test5
 Meta:
-@Scrapconnect
+@testreport
 
 Narrative:
 As a User create contract and shipment in D365 and validate the details in scrap connect for the same.

@@ -9,15 +9,10 @@ As a user login to vikings app
 Scenario: Login to vikings
 
 Given login to DJJ Vikings pricing app
-When user navigates to scale pricing
-When select inventory type and company from dropdown
-When select branch and level from list
-When scale pricing search
-When user adds new price
-When user enters new price details
-Then Add variances for all levels
-Then save price material
-Then user navigates to price list
-Then user select company branch and search prices from price list
-Then validate material description in pricing
+When User navigates to recycling CRM section
+When User selects accounts view activity
+When user selects all accounts from view section
+When Create new Supplier account from supplier home page
+Then Edit supplier account header
+Then Enter main details in supplier
 Then user logout

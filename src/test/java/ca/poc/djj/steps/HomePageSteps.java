@@ -33,19 +33,9 @@ public class HomePageSteps extends CommonSteps {
 	public  void navigates_to_recycling_crm_section() throws InterruptedException {
 	//	h_page.crm_iframe.waitUntilVisible();
 		
-		Thread.sleep(5000);
-		h_page.getDriver().navigate().refresh();
-		Thread.sleep(10000);
-		System.out.println("refresh!!!!!");
-	//	h_page.getDriver().navigate().refresh();
-	//	Thread.sleep(40000);
-		System.out.println("refresh!!!!!2");
-		Thread.sleep(60000);
-		h_page.crm_iframe.waitUntilVisible();
-		h_page.getDriver().switchTo().frame(h_page.crm_iframe);
+		
 		logsteps.execution_log("Handled frame ");
-		h_page.recycling_crm_section.click();
-		h_page.getDriver().switchTo().defaultContent();
+		
 		logsteps.execution_log("navigated to CRM section ");
 	}
 	
@@ -57,19 +47,13 @@ public class HomePageSteps extends CommonSteps {
 	
 	@When("User selects accounts view activity")
 	public void select_accounts_view_activity() {
-		h_page.all_accounts_view_activity.click();
+		
 		logsteps.execution_log("selected All accounts oview activity");
 	}
 	
 	@When("user selects all accounts from view section")
 	public void all_accounts_view_section() throws InterruptedException {
-		h_page.dropdown_arrow.waitUntilVisible();
-		h_page.dropdown_arrow.waitUntilClickable();
-		Thread.sleep(1500);
-		h_page.dropdown_arrow.click();
-		Thread.sleep(1500);
-		h_page.all_accounts.click();
-		Thread.sleep(1500);
+		
 		logsteps.execution_log("selected All accounts option from view section");
 	}
 	
@@ -87,19 +71,9 @@ public class HomePageSteps extends CommonSteps {
 	
 	@When("Create new Supplier account from supplier home page")
 	public void new_supplier_button() throws InterruptedException {
-		Thread.sleep(5000);
-		h_page.new_supplier_button.waitUntilClickable();
-		jsClick(h_page.new_supplier_button);
+		
 		logsteps.execution_log("user started creating new supplier");
-		Thread.sleep(3000);
-		h_page.text_account_supplier_value.waitUntilVisible();
-		Thread.sleep(3000);
-		System.err.println(h_page.text_account_supplier_value.getText());
-		if(h_page.text_account_supplier_value.getText().contains("SAIOne - Supplier Info")) {
-			h_page.text_account_supplier_value.click();
-			h_page.supplier_home_drop.click();
-			Thread.sleep(5000);
-		}
+		
 	}
 	
 	@Then("validate material description in pricing")

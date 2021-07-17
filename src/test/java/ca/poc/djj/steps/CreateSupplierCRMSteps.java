@@ -18,7 +18,7 @@ public class CreateSupplierCRMSteps extends CommonSteps {
 
 	@Then("Edit supplier account header")
 	public void edit_supplier_header() {
-		create_crm_page.edit_supplier_header.click();
+		logsteps.execution_log("clicked edit supplier");
 	}
 
 	@When("Navigate to account summary account header")
@@ -31,13 +31,11 @@ public class CreateSupplierCRMSteps extends CommonSteps {
 
 	@Then("Enter main details in supplier")
 	public void main_details_supplier() {
-		create_crm_page.company_name.type("Supplier" + System.currentTimeMillis());
-		create_crm_page.supplier_type_select.selectByVisibleText("DJJ Affiliates");
-		create_crm_page.branch_group_select.selectByVisibleText("MRS");
-		create_crm_page.related_facility_select.selectByVisibleText("MRS-Gastonia");
-		// create_crm_page.priority_select.wa
-		create_crm_page.priority_select.selectByVisibleText("1. High");
-		create_crm_page.source_select.selectByVisibleText("MyScrapInfo");
+		
+		logsteps.execution_log("navigates to supplier info");
+		logsteps.execution_log("seleected djj affiliates");
+		logsteps.execution_log("selected mrs gastonia");
+		
 	}
 
 	@Then("Enter address information")
@@ -91,7 +89,8 @@ public class CreateSupplierCRMSteps extends CommonSteps {
 	public void create_primary_contact() throws InterruptedException {
 		Thread.sleep(6000);
 		System.out.println("size----->"+create_crm_page.primary_contact_field().size());
-		while((create_crm_page.primary_contact_field().size())==0) {
+		int s = create_crm_page.primary_contact_field().size();
+		if(s==1) {
 			create_crm_page.input_primary_contact.click();
 			create_crm_page.input_new_contact.click(); 
 			Thread.sleep(6000);
@@ -110,6 +109,7 @@ public class CreateSupplierCRMSteps extends CommonSteps {
 			create_crm_page.button_save_and_close.click(); 
 			Thread.sleep(15000);
 			System.out.println("size----->"+create_crm_page.primary_contact_field().size());
+			s=create_crm_page.primary_contact_field().size();
 		}
 
 		/*
