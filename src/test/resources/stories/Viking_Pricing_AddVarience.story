@@ -1,6 +1,6 @@
 Viking_Pricing_AddVarience
 Meta:
-@poc
+@testreport
 
 Narrative:
 As a user login to vikings app
