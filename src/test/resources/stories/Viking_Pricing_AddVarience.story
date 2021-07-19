@@ -20,4 +20,5 @@ Then save price material
 Then user navigates to price list
 Then user select company branch and search prices from price list
 Then validate material description in pricing
+When user opens scrapdragon application and validates
 Then user logout
