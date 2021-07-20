@@ -32,6 +32,9 @@ public class FreightNewLanePage extends PageObject {
 	@FindBy(xpath = "//label[text()='Yard']/../input")
 	public WebElementFacade new_stop_yard;
 	
+	@FindBy(xpath = "//label[text()='Yard43465345']/../input")
+	public WebElementFacade new_stop_yard_inv;
+	
 	@FindBy(xpath = "//label[text()='Consumer']/../input")
 	public WebElementFacade new_stop_consumer;
 	

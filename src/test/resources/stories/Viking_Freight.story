@@ -1,6 +1,6 @@
 Viking_freight
 Meta:
-@poc
+@pocerror
 
 Narrative:
 As a user login to freight app
@@ -11,7 +11,7 @@ Scenario: Login to vikings freight application
 Given login to DJJ Vikings freight app
 When user landed to recycling freight
 When user add first stop
-When user add second stop
+When user add second stop invalid locator
 Then user add movement charge for yard to supplier
 Then user add charges to supplier
 Then user add stop charge for yard to supplier

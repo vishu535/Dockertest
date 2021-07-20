@@ -47,6 +47,20 @@ public class FreightNewLaneSteps extends CommonSteps {
 		logsteps.execution_log("second stop is created");
 	}
 	
+
+	@When("user add second stop invalid locator")
+	public void add_second_stop_invalidlocator() throws InterruptedException {
+		rf_page.add_stop_second.click();
+		logsteps.execution_log("second stop button clicked");
+		Thread.sleep(2000);
+		jsClick(rf_page.new_stop_yard_inv);
+		logsteps.execution_log("selected yard");
+		rf_page.yard_select.selectByVisibleText("MRS-Monroe");
+		logsteps.execution_log("selected yard MRS-Monroe");
+		rf_page.new_stop_ok.click();
+		logsteps.execution_log("second stop is created");
+	}
+	
 	@Then("user add movement charge for yard to supplier")
 	public void add_movement_charge() throws InterruptedException {
 		Thread.sleep(4000);

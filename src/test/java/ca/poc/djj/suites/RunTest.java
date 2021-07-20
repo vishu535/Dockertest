@@ -7,7 +7,7 @@ import net.serenitybdd.jbehave.SerenityStories;
 import net.serenitybdd.jbehave.annotations.Metafilter;
 import net.thucydides.core.util.EnvironmentVariables;
 import net.thucydides.core.util.SystemEnvironmentVariables;
-@Metafilter("+poc")
+@Metafilter("+pocerror")
 public class RunTest extends SerenityStories {
 	
 	public RunTest() {
