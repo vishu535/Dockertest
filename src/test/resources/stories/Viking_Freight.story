@@ -1,6 +1,6 @@
 Viking_freight
 Meta:
-@poc
+@test1
 
 Narrative:
 As a user login to freight app
