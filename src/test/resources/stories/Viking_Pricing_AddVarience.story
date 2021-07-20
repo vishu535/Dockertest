@@ -6,7 +6,7 @@ Narrative:
 As a user login to vikings app
 
 
-Scenario: Login to vikings
+Scenario: Login to Pricing application 
 
 Given login to DJJ Vikings pricing app
 When user navigates to scale pricing
