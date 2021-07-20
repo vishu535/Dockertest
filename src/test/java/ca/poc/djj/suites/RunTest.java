@@ -20,6 +20,6 @@ public class RunTest extends SerenityStories {
 	public void afterAnyScenario() throws IOException {
 		Runtime.getRuntime().exec("aggre.bat");
 		System.out.println("in After scenario");	
-		
+		System.out.println("in After scenario");
 	}
 }
